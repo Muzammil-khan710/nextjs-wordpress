@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 import React from 'react';
-import { generateId } from 'src/utils/generateId';
+import { generateId } from '../../src/utils/generateId';
 
 export default function CoreHeading(props:any) {
   const attributes = props.attributes;

@@ -28,7 +28,7 @@ export default function App({ Component, pageProps }: AppProps) {
   };
   useEffect(() => {
     console.log(pageProps)
-  }, [])
+  }, [pageProps])
 
   return (
     <FaustProvider pageProps={pageProps} key={router.asPath}>

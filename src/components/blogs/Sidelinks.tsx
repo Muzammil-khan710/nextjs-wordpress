@@ -20,7 +20,7 @@ const Sildelinks = ({ className, data }: Props) => {
           {data.map((edge: any, i: number) => {
             const categories = edge.node.categories.edges;
             return categories.map((category: any, j: number) => (
-              <a href={category.node.link}>
+              <a href={category.node.link} key={j}>
                 <span
                   className="text-[18px] dark:text-bluedarktwo cursor-pointer text-blue leading-[27px] font-inter hover:underline decoration-2 underline-offset-4"
                   key={`${i}-${j}`}
