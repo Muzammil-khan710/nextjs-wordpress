@@ -8,11 +8,8 @@ const nextConfig = {
   experimental: {
     webVitalsAttribution: ["CLS", "LCP", "FCP", "FID", "INP", "TTFB"],
   },
-  sassOptions: {
-    includePath: [path.join(__dirname, "styles")],
-  },
   images: {
-    domains: ["blog.rovae.in"]
+    domains: ["blog.rovae.in", "images.surferseo.art"]
   },
 };
 

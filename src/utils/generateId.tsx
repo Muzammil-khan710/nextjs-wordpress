@@ -1,0 +1,1 @@
+export const generateId = (id:string) => (id.toLocaleLowerCase().split(" ").join("-"))
