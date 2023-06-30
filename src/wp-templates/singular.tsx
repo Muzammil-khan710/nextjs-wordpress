@@ -8,9 +8,8 @@ import Otherarticles from 'components/blogs/Otherarticles';
 import { useRouter } from 'next/router';
 import SideBar from 'components/blogs/SideBar';
 import { useCategoryCtx } from '../pages/_app';
-import { getNextStaticProps } from '@faustwp/core';
 
-export default function SingleArticle(props: any) {
+export default function Component(props: any) {
 
   console.log(props)
 
@@ -90,11 +89,11 @@ export default function SingleArticle(props: any) {
   );
 }
 
-SingleArticle.variables = ({ uri }: any) => {
+Component.variables = ({ uri }: any) => {
   return { uri };
 };
 
-SingleArticle.query = gql`
+Component.query = gql`
 ${components.CoreParagraph.fragments.entry}
 ${components.CoreHeading.fragments.entry}
 ${components.CoreImage.fragments.entry}
@@ -176,11 +175,4 @@ const MyFallbackComponent = ({ renderedHtml }: any) => {
   return (
     <span className='my-14' dangerouslySetInnerHTML={{ __html: renderedHtml }} />
   )
-}
-
-export async function getStaticProps(ctx: any) {
-  return await getNextStaticProps(ctx, {
-    Page: SingleArticle,
-    revalidate: 10
-  });
 }
