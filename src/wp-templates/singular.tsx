@@ -10,12 +10,17 @@ import SideBar from 'components/blogs/SideBar';
 import { useCategoryCtx } from '../pages/_app';
 
 export default function Component(props: any) {
-
-  console.log(props)
-
-  const { title, editorBlocks, featuredImage, categories, author, date, excerpt, seo } = props.data.article;
-  const tableContents = editorBlocks.filter((e: { __typename: string; }) => e.__typename === 'CoreHeading').map((el: any) => { return { level: el.attributes.level, content: el.attributes.content } })
+  
+  const { data, loading } = props;
   const router = useRouter()
+  const { handleCategorySelect, selectedCategory, handleShowAllBlogs, showAllBlogs } = useCategoryCtx()
+
+  if (loading) {
+    return <>Loading...</>;
+  }
+
+  const { title, editorBlocks, featuredImage, categories, author, date, excerpt, seo } = data?.article;
+  const tableContents = editorBlocks.filter((e: { __typename: string; }) => e.__typename === 'CoreHeading').map((el: any) => { return { level: el.attributes.level, content: el.attributes.content } })
   const { articles } = props.data
   const JsonSchema = seo?.schema.raw
 
@@ -30,7 +35,6 @@ export default function Component(props: any) {
 
   const convertedString = JSON.stringify(convertedJson);
 
-  const { handleCategorySelect, selectedCategory, handleShowAllBlogs, showAllBlogs } = useCategoryCtx()
 
   const allCategories: string[] = [];
   articles.edges.forEach((blog: { node: { categories: { edges: any[]; }; }; }) => {
@@ -89,8 +93,8 @@ export default function Component(props: any) {
   );
 }
 
-Component.variables = ({ uri }: any) => {
-  return { uri };
+Component.variables = ({databaseId}: any, ctx: { asPreview: any }) => {
+  return { databaseId, asPreview: ctx?.asPreview };
 };
 
 Component.query = gql`
@@ -98,7 +102,8 @@ ${components.CoreParagraph.fragments.entry}
 ${components.CoreHeading.fragments.entry}
 ${components.CoreImage.fragments.entry}
 ${components.GenesisCustomBlocksSnippet.fragments.entry}
-query MQ($uri: ID = "") {
+${components.CoreListItem.fragments.entry}
+query MQ($databaseId: ID!, $asPreview: Boolean = false) {
     articles {
       edges {
         node {
@@ -124,7 +129,7 @@ query MQ($uri: ID = "") {
         }
       }
     }
-    article (id: $uri, idType: URI) {
+    article (id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
       title
       id
       date
@@ -166,6 +171,7 @@ query MQ($uri: ID = "") {
         ...${components.CoreHeading.fragments.key}
         ...${components.CoreImage.fragments.key}
         ...${components.GenesisCustomBlocksSnippet.fragments.key}
+        ...${components.CoreListItem.fragments.key}
       }
     }
   }
