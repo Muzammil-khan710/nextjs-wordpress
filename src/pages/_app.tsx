@@ -12,6 +12,8 @@ export const useCategoryCtx = () => useContext(CategoryContext)
 
 export default function App({ Component, pageProps }: AppProps) {
 
+  console.log(pageProps)
+
   const router = useRouter()
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
