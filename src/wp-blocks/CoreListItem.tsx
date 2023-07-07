@@ -5,9 +5,7 @@ export default function CoreListItem(props:any) {
   const attributes = props.attributes;
   console.log(attributes)
   return (
-    <li
-      className={`${attributes?.className ? attributes.className : ''} font-inter text-base text-dark-100 dark:text-grey-500 mt-[18px]`}
-      dangerouslySetInnerHTML={{ __html: attributes?.content }}/>
+    <li className='font-inter text-base text-dark-100 dark:text-grey-500 mt-14 list-outside'>{attributes.content}</li>
   );
 }
 
@@ -16,7 +14,6 @@ CoreListItem.fragments = {
     fragment CoreListItemFragment on CoreListItem {
       attributes {
         content
-        cssClassName
       }
     }
   `,
