@@ -7,7 +7,7 @@ export default function CoreList(props:any) {
   const pattern = /<li>(.*?)<\/li>/g;
   const result = attributes.values.replace(pattern, "<li class=\"font-inter text-base text-dark-100 dark:text-grey-500 mt-4 list-outside\">$1</li>");
   return (
-    <ol className='mt-14 list-outside' dangerouslySetInnerHTML={{__html:result}}/>
+    <ol className='mt-14 list-disc' dangerouslySetInnerHTML={{__html:result}}/>
   );
 }
 

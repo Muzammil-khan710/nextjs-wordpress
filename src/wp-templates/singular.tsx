@@ -111,6 +111,30 @@ ${components.CoreList.fragments.entry}
 ${components.CoreListItem.fragments.entry}
 ${components.CoreSpacer.fragments.entry}
 query MQ($databaseId: ID!, $asPreview: Boolean = false) {
+    articles {
+      edges {
+        node {
+          title
+          excerpt
+          uri
+          featuredImage {
+            node {
+              sourceUrl
+              title
+            }
+          }
+          categories {
+            edges {
+              node {
+                name
+                link
+                slug
+              }
+            }
+          }
+        }
+      }
+    }
     article (id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
       title
       id
