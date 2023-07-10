@@ -5,7 +5,8 @@ export default function CoreListItem(props:any) {
   const attributes = props.attributes;
   console.log(attributes)
   return (
-    <li className='font-inter text-base text-dark-100 dark:text-grey-500 mt-14 list-outside'>{attributes.content}</li>
+    // <li className='font-inter text-base text-dark-100 dark:text-grey-500 mt-14 list-outside'>{attributes.content}</li>
+    null  
   );
 }
 

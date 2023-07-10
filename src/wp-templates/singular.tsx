@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { WordPressBlocksViewer } from '@faustwp/blocks';
 import components from '../wp-blocks';
 import BlogHerosec from 'components/blogs/ArticleHero';
@@ -15,16 +15,21 @@ export default function Component(props: any) {
   const router = useRouter()
   const { handleCategorySelect, selectedCategory, handleShowAllBlogs, showAllBlogs } = useCategoryCtx()
 
+  const response = useQuery(ARTICLES)
+
+  console.log(response)
+
   if (loading) {
     return <>Loading...</>;
   }
+
 
   const { title, editorBlocks, featuredImage, categories, author, date, excerpt, seo } = data?.article;
   const tableContents = editorBlocks.filter((e: { __typename: string; }) => e.__typename === 'CoreHeading').map((el: any) => { return { level: el.attributes.level, content: el.attributes.content } })
   const { articles } = props.data
   const JsonSchema = seo?.schema.raw
 
-  const filteredArticles = articles.edges.filter((item: any) => item.node.title !== title)
+  const filteredArticles = articles?.edges.filter((item: any) => item.node.title !== title)
 
   const convertedJson = JSON.parse(JsonSchema, (key, value) => {
     if (typeof value === 'string' && value.includes('blog.rovae.in')) {
@@ -37,7 +42,7 @@ export default function Component(props: any) {
 
 
   const allCategories: string[] = [];
-  articles.edges.forEach((blog: { node: { categories: { edges: any[]; }; }; }) => {
+  articles?.edges.forEach((blog: { node: { categories: { edges: any[]; }; }; }) => {
     blog.node.categories.edges.forEach((category: { node: { name: string; }; }) => {
       if (!allCategories.includes(category.node.name)) {
         allCategories.push(category.node.name);
@@ -75,7 +80,7 @@ export default function Component(props: any) {
               </div>
             </div>
           </div>
-          {filteredArticles.length > 0 &&
+          {filteredArticles?.length > 0 &&
             <Otherarticles className="max-w-[700px] mb-16" data={filteredArticles} />
           }
           <SideBar
@@ -102,33 +107,9 @@ ${components.CoreParagraph.fragments.entry}
 ${components.CoreHeading.fragments.entry}
 ${components.CoreImage.fragments.entry}
 ${components.GenesisCustomBlocksSnippet.fragments.entry}
+${components.CoreList.fragments.entry}
 ${components.CoreListItem.fragments.entry}
 query MQ($databaseId: ID!, $asPreview: Boolean = false) {
-    articles {
-      edges {
-        node {
-          title
-          date
-          excerpt
-          uri
-          featuredImage {
-            node {
-              sourceUrl
-              title
-            }
-          }
-          categories {
-            edges {
-              node {
-                name
-                link
-                slug
-              }
-            }
-          }
-        }
-      }
-    }
     article (id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
       title
       id
@@ -171,6 +152,7 @@ query MQ($databaseId: ID!, $asPreview: Boolean = false) {
         ...${components.CoreHeading.fragments.key}
         ...${components.CoreImage.fragments.key}
         ...${components.GenesisCustomBlocksSnippet.fragments.key}
+        ...${components.CoreList.fragments.key}
         ...${components.CoreListItem.fragments.key}
       }
     }
@@ -182,3 +164,32 @@ const MyFallbackComponent = ({ renderedHtml }: any) => {
     <span className='my-14' dangerouslySetInnerHTML={{ __html: renderedHtml }} />
   )
 }
+
+const ARTICLES = gql
+` query AllArticles {
+articles {
+  edges {
+    node {
+      title
+      date
+      excerpt
+      uri
+      featuredImage {
+        node {
+          sourceUrl
+          title
+        }
+      }
+      categories {
+        edges {
+          node {
+            name
+            link
+            slug
+          }
+        }
+      }
+    }
+  }
+}
+}`

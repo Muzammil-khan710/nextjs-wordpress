@@ -11,9 +11,9 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.16",
-    "@faustwp/blocks": "^1.0.0",
+    "@faustwp/blocks": "^1.1.0",
     "@faustwp/cli": "^1.0.1",
-    "@faustwp/core": "^1.0.1",
+    "@faustwp/core": "^1.0.2",
     "@types/node": "20.3.2",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
