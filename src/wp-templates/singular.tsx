@@ -109,6 +109,7 @@ ${components.CoreImage.fragments.entry}
 ${components.GenesisCustomBlocksSnippet.fragments.entry}
 ${components.CoreList.fragments.entry}
 ${components.CoreListItem.fragments.entry}
+${components.CoreSpacer.fragments.entry}
 query MQ($databaseId: ID!, $asPreview: Boolean = false) {
     article (id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
       title
@@ -154,6 +155,7 @@ query MQ($databaseId: ID!, $asPreview: Boolean = false) {
         ...${components.GenesisCustomBlocksSnippet.fragments.key}
         ...${components.CoreList.fragments.key}
         ...${components.CoreListItem.fragments.key}
+        ...${components.CoreSpacer.fragments.key}
       }
     }
   }

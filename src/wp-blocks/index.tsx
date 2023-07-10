@@ -5,6 +5,7 @@ import CoreImage from './CoreImage'
 import GenesisCustomBlocksSnippet from './GenesisCustomBlocksSnippet';
 import CoreList from './CoreList';
 import CoreListItem from './CoreListItem';
+import CoreSpacer from './CoreSpacer';
 
 export default {
   CoreParagraph,
@@ -12,5 +13,6 @@ export default {
   CoreImage,
   CoreList,
   CoreListItem,
+  CoreSpacer,
   'GenesisCustomBlocksSnippet': GenesisCustomBlocksSnippet
 };
