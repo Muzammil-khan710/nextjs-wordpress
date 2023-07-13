@@ -15,14 +15,12 @@ export default function Component(props: any) {
   const router = useRouter()
   const { handleCategorySelect, selectedCategory, handleShowAllBlogs, showAllBlogs } = useCategoryCtx()
 
-  const response = useQuery(ARTICLES)
-
-  console.log(response)
 
   if (loading) {
     return <>Loading...</>;
   }
 
+  console.log(data)
 
   const { title, editorBlocks, featuredImage, categories, author, date, excerpt, seo } = data?.article;
   const tableContents = editorBlocks.filter((e: { __typename: string; }) => e.__typename === 'CoreHeading').map((el: any) => { return { level: el.attributes.level, content: el.attributes.content } })
@@ -50,6 +48,21 @@ export default function Component(props: any) {
     });
   });
 
+  const newBlocks = editorBlocks.map((block:any) => {
+    if (
+      block?.attributes?.content
+    ) {
+      const newUpdatedContent = block?.attributes?.content.replace("&amp;", "&") 
+      return {
+        ...block, 
+        attributes: {
+          ...block.attributes,
+          content: newUpdatedContent
+        }
+      }
+    }
+  })
+
   return (
     <>
       <div className='main-spacer'>
@@ -73,7 +86,7 @@ export default function Component(props: any) {
                 <Featureimage src={featuredImage.node.sourceUrl} alt={featuredImage.node.title} tableContents={tableContents} />
                 <div className='max-w-[700px] md:mx-auto layout3xl:mx-0'>
                   <WordPressBlocksViewer
-                    blocks={editorBlocks}
+                    blocks={newBlocks}
                     fallbackBlock={MyFallbackComponent}
                   />
                 </div>
@@ -111,30 +124,31 @@ ${components.CoreList.fragments.entry}
 ${components.CoreListItem.fragments.entry}
 ${components.CoreSpacer.fragments.entry}
 query MQ($databaseId: ID!, $asPreview: Boolean = false) {
-    articles {
-      edges {
-        node {
-          title
-          excerpt
-          uri
-          featuredImage {
-            node {
-              sourceUrl
-              title
-            }
+  articles {
+    edges {
+      node {
+        title
+        date
+        excerpt
+        uri
+        featuredImage {
+          node {
+            sourceUrl
+            title
           }
-          categories {
-            edges {
-              node {
-                name
-                link
-                slug
-              }
+        }
+        categories {
+          edges {
+            node {
+              name
+              link
+              slug
             }
           }
         }
       }
     }
+  }
     article (id: $databaseId, idType: DATABASE_ID, asPreview: $asPreview) {
       title
       id
@@ -190,32 +204,3 @@ const MyFallbackComponent = ({ renderedHtml }: any) => {
     <span className='my-14' dangerouslySetInnerHTML={{ __html: renderedHtml }} />
   )
 }
-
-const ARTICLES = gql
-` query AllArticles {
-articles {
-  edges {
-    node {
-      title
-      date
-      excerpt
-      uri
-      featuredImage {
-        node {
-          sourceUrl
-          title
-        }
-      }
-      categories {
-        edges {
-          node {
-            name
-            link
-            slug
-          }
-        }
-      }
-    }
-  }
-}
-}`
