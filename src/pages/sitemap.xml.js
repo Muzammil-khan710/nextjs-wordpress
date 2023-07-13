@@ -5,7 +5,7 @@ export default function Sitemap() {}
 export function getServerSideProps(ctx) {
   return getSitemapProps(ctx, {
     wpUrl: process.env.NEXT_PUBLIC_WORDPRESS_URL  || 'https://blog.rovae.in' ,
-    frontendUrl: process.env.FRONTEND_URL || 'https://nextjs-wordpress-rho-sandy.vercel.app/' ,
+    frontendUrl: process.env.FRONTEND_URL || 'https://nextjs-wordpress-rho-sandy.vercel.app' ,
     pages: [
       {
         path: '/',
